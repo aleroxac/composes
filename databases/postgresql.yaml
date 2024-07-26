@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  postgresql:
+    container_name: postgresql
+    hostname: postgresql
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    ports:
+      - "5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
