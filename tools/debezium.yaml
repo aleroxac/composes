@@ -1,0 +1,25 @@
+# syntax=docker/dockerfile:1 
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  debezium-server:
+    container_name: debezium-server
+    hostname: debezium-server
+    restart: always
+    image: quay.io/debezium/server:2.0
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials/service-account.json
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./service-account.json:/tmp/credentials/service-account.json
+      - ./conf:/debezium/conf
+    networks:
+      - composes
