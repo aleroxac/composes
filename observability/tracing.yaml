@@ -1,0 +1,68 @@
+# syntax=docker/dockerfile:1 
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  jaeger:
+    container_name: jaeger
+    hostname: jaeger
+    restart: always
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - 16686:16686
+      - 14268
+      - 14250
+    networks:
+      - composes
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --no-verbose --tries=1 --timeout=5 http://localhost:16686 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  zipkin:
+    container_name: zipkin
+    hostname: zipkin
+    restart: always
+    image: openzipkin/zipkin:latest
+    ports:
+      - 9411:9411 # Port used for the Zipkin UI and HTTP Api
+    environment:
+      - STORAGE_TYPE=mem
+      - JAVA_OPTS=-Xms1024m -Xmx1024m -XX:+ExitOnOutOfMemoryError
+    networks:
+      - composes
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --no-verbose --tries=1 --timeout=5 http://localhost:9411/health || exit 1"]
+      start_interval: 2s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+
+  otel-collector:
+    container_name: otel-collector
+    hostname: otel-collector
+    restart: always
+    image: otel/opentelemetry-collector:latest
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    ports:
+      - 1888:1888   # pprof extension
+      - 8888:8888   # Prometheus metrics exposed by the collector
+      - 8889:8889   # Prometheus exporter metrics
+      - 13133:13133 # health_check extension
+      - 4317:4317   # OTLP gRPC receiver
+      - 55679:55679 # zpages extension
+    volumes:
+      - ./docker/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    networks:
+      - composes
+    depends_on:
+      - zipkin
+      - jaeger

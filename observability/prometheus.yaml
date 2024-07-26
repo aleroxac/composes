@@ -1,0 +1,47 @@
+# syntax=docker/dockerfile:1 
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  prometheus:
+    container_name: prometheus
+    hostname: prometheus
+    restart: always
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./docker/prometheus.yaml:/etc/prometheus/prometheus.yml
+    networks:
+      - composes
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --no-verbose --tries=1 --timeout=5 http://localhost:9090/-/healthy || exit 1"]
+      start_interval: 2s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  grafana:
+    container_name: grafana
+    hostname: grafana
+    restart: always
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    networks:
+      - composes
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --no-verbose --tries=1 --timeout=5 http://localhost:3000/api/health || exit 1"]
+      start_interval: 2s
+      interval: 10s
+      timeout: 5s
+      retries: 3
