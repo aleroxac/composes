@@ -1,0 +1,19 @@
+# syntax=docker/dockerfile:1
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  memcached:
+    container_name: memcached
+    hostname: memcached
+    image: memcached:1.6.9-alpine
+    ports:
+      - "11211"
+    networks:
+      - composes
