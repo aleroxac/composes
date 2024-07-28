@@ -38,7 +38,7 @@ services:
       MYSQL_DATABASE: orders
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./migrations:/migrations
+      - ./migrations/mysql:/migrations
     networks:
       - composes
     depends_on:
@@ -48,7 +48,7 @@ services:
   mysql-workbench:
     container_name: mysql-workbench
     hostname: mysql-workbench
-    restart: always
+    restart: unless-stopped
     image: lscr.io/linuxserver/mysql-workbench:latest
     environment:
       - PUID=1000
@@ -63,6 +63,9 @@ services:
       - composes
     cap_add:
       - IPC_LOCK
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   phpmyadmin:
     container_name: phpmyadmin
@@ -75,13 +78,6 @@ services:
       - PMA_ARBITRARY=1
     networks:
       - composes
-
-  adminer:
-    container_name: adminer
-    hostname: adminer
-    restart: always
-    image: adminer:4.8.1
-    ports:
-      - 8081:8080
-    networks:
-      - composes
+    depends_on:
+      mysql:
+        condition: service_healthy
