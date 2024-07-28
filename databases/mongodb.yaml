@@ -21,6 +21,29 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     networks:
       - composes
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.runCommand(\"ping\").ok' localhost:27017/test --quiet || echo OK"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  migrations:
+    hostname: migrations
+    container_name: migrations
+    restart: no
+    image: migrate/migrate:v4.17.1
+    command: -path=/migrations -database "mongodb://root:root@mongodb:27017/orders" -verbose up
+    environment:
+      MYSQL_DATABASE: orders
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./migrations/mongodb:/migrations
+    networks:
+      - composes
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
   mongo-express:
     container_name: mongo-express
@@ -36,3 +59,12 @@ services:
       ME_CONFIG_BASICAUTH: false
     networks:
       - composes
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -t | grep -E 'mongodb.*ESTABLISHED'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
