@@ -12,6 +12,7 @@ services:
   postgresql:
     container_name: postgresql
     hostname: postgresql
+    restart: always
     image: postgres:9.6-alpine
     environment:
       POSTGRES_USER: test
@@ -19,8 +20,43 @@ services:
       POSTGRES_DB: test
     ports:
       - "5432"
+    networks:
+      - composes
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  migrations:
+    hostname: migrations
+    container_name: migrations
+    restart: no
+    image: migrate/migrate:v4.17.1
+    command: -path=/migrations -database "postgres://root:root@postgresql:5432/orders" -verbose up
+    environment:
+      MYSQL_DATABASE: orders
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./migrations/postgresql:/migrations
+    networks:
+      - composes
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+  pgadmin:
+    container_name: pgadmin
+    hostname: pgadmin
+    restart: always
+    image: dpage/pgadmin4:2024-07-25-1
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@domain.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "8000:80"
+    networks:
+      - composes
+    depends_on:
+      postgresql:
+        condition: service_healthy
