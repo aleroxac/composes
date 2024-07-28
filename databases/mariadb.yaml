@@ -1,0 +1,83 @@
+# syntax=docker/dockerfile:1
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  mariadb:
+    container_name: mariadb
+    hostname: mariadb
+    restart: always
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: orders
+    ports:
+      - "3306:3306"
+    networks:
+      - composes
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  migrations:
+    hostname: migrations
+    container_name: migrations
+    restart: no
+    image: migrate/migrate:v4.17.1
+    command: -path=/migrations -database "mysql://root:root@tcp(mariadb:3306)/orders" -verbose up
+    environment:
+      MYSQL_DATABASE: orders
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./migrations/mariadb:/migrations
+    networks:
+      - composes
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+  mysql-workbench:
+    container_name: mysql-workbench
+    hostname: mysql-workbench
+    restart: unless-stopped
+    image: lscr.io/linuxserver/mysql-workbench:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    ports:
+      - 3000:3000
+      - 3001:3001
+    volumes:
+      - /path/to/config:/config
+    networks:
+      - composes
+    cap_add:
+      - IPC_LOCK
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    hostname: phpmyadmin
+    restart: always
+    image: phpmyadmin:5.2.1
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - composes
+    depends_on:
+      mariadb:
+        condition: service_healthy

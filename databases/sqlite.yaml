@@ -1,0 +1,45 @@
+  
+# syntax=docker/dockerfile:1
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  migrations:
+    hostname: migrations
+    container_name: migrations
+    restart: no
+    image: migrate/migrate:v4.17.1
+    command: -path=/migrations -database "sqlite3:///data/databse.db" -verbose up
+    environment:
+      MYSQL_DATABASE: orders
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./migrations/sqlite:/migrations
+      - ./database.db:/data/database.db
+    networks:
+      - composes
+
+  sqlitebrowser:
+    container_name: sqlitebrowser
+    hostname: sqlitebrowser
+    restart: unless-stopped
+    image: lscr.io/linuxserver/sqlitebrowser:latest
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /path/to/config:/config
+    ports:
+      - 3000:3000
+      - 3001:3001
+    networks:
+      - composes
