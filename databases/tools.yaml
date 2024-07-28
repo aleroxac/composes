@@ -1,0 +1,32 @@
+# syntax=docker/dockerfile:1
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  ## postgresql, cockroachdb, mysql, mariadb, sqlite and mongodb
+  adminer:
+    container_name: adminer
+    hostname: adminer
+    restart: always
+    image: adminer:4.8.1
+    ports:
+      - 8081:8080
+    networks:
+      - composes
+
+  ## postgresql, cockroachdb, mysql, mariadb and sqlite
+  dbeaver:
+    container_name: dbeaver
+    hostname: dbeaver
+    restart: always
+    image: dbeaver/cloudbeaver:latest
+    ports:
+      - 8080:8978
+    networks:
+      - composes
