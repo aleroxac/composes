@@ -1,0 +1,30 @@
+# syntax=docker/dockerfile:1 
+version: "3"
+
+
+
+networks:
+  composes:
+
+
+
+services:
+  scoutsuite:
+    container_name: scoutsuite
+    hostname: scoutsuite
+    restart: always
+    image: scoutsuite:latest
+    env_file:
+      - config/build.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VCS_REF=${VCS_REF}
+        - VCS_URL=${VCS_URL}
+        - VERSION=${VERSION}
+        - BUILD_DATE=${BUILD_DATE}
+        - VENDOR=${VENDOR}
+        - NAME=${NAME}
+        - IMAGE_NAME=${IMAGE_NAME}
+        - DESCRIPTION=${DESCRIPTION}
