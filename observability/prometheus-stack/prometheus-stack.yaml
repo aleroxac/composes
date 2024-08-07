@@ -17,7 +17,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - ./docker/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./configs/prometheus.yaml:/etc/prometheus/prometheus.yml
     networks:
       - composes
     healthcheck:
