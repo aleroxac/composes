@@ -53,6 +53,9 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: root@domain.com
       PGADMIN_DEFAULT_PASSWORD: root
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
     ports:
       - "8000:80"
     networks:
@@ -60,3 +63,8 @@ services:
     depends_on:
       postgresql:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "PGPASSWORD=${POSTGRES_PASSWORD} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c 'SELECT 1;' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5        
