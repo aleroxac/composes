@@ -24,6 +24,11 @@ services:
     command: start-single-node --insecure
     networks:
       - composes
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health?ready=1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   migrations:
     hostname: migrations
@@ -50,6 +55,9 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: root@domain.com
       PGADMIN_DEFAULT_PASSWORD: root
+      COCKROACH_USER: root
+      COCKROACH_PASSWORD: root
+      COCKROACH_DATABASE: orders
     ports:
       - "8000:80"
     networks:
@@ -57,3 +65,8 @@ services:
     depends_on:
       cockroachdb:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "PGPASSWORD=${COCKROACH_PASSWORD} psql -U ${COCKROACH_USER} -d ${COCKROACH_DATABASE} -c 'SELECT 1;' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
