@@ -23,3 +23,8 @@ services:
       - ./conf:/debezium/conf
     networks:
       - composes
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "curl http://localhost:8080/q/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
