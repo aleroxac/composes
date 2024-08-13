@@ -13,7 +13,7 @@ services:
     container_name: mariadb
     hostname: mariadb
     restart: always
-    image: mariadb
+    image: mariadb:11.4.3
     environment:
       MARIADB_ROOT_PASSWORD: root
       MARIADB_DATABASE: orders
