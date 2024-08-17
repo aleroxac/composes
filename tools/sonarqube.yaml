@@ -23,7 +23,7 @@ services:
     container_name: sonarqube_db
     hostname: sonarqube_db
     restart: unless-stopped
-    image: postgres:12.1
+    image: postgres:13.16
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=v07IGCFCF83Z95NX
@@ -38,7 +38,7 @@ services:
     container_name: sonarqube
     hostname: sonarqube
     restart: unless-stopped
-    image: sonarqube:7.9.2-community
+    image: sonarqube:9.9.6-community
     environment:
       - SONARQUBE_JDBC_USERNAME=sonar
       - SONARQUBE_JDBC_PASSWORD=v07IGCFCF83Z95NX
