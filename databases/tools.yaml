@@ -16,7 +16,7 @@ services:
     restart: always
     image: adminer:4.8.1
     ports:
-      - 8081:8080
+      - 8080:8080
     networks:
       - composes
 
@@ -27,6 +27,6 @@ services:
     restart: always
     image: dbeaver/cloudbeaver:latest
     ports:
-      - 8080:8978
+      - 8978:8978
     networks:
       - composes
