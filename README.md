@@ -1,24 +1,41 @@
+![awesome](https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/awesome/awesome.png)
+
 # composes
-Useful docker-compose files catalog
+Badass docker-compose catalog
 
-## options
-- [cache/memcached](cache/memcached.yaml)
-- [cache/redis](cache/redis.yaml)
+## Catalog
+<details>
+  <summary>cache</summary>
+  
+  - [memcached](cache/memcached.yaml)
+  - [redis](cache/redis.yaml)
+</details>
 
-- [databases/cockroachdb](databases/cockroachdb.yaml)
-- [databases/mariadb](databases/mariadb.yaml)
-- [databases/mongodb](databases/mongodb.yaml)
-- [databases/mysql](databases/mysql.yaml)
-- [databases/postgresql](databases/postgresql.yaml)
-- [databases/sqlite](databases/sqlite.yaml)
-- [databases/tools](databases/tools.yaml)
+<details>
+  <summary>databases</summary>
+  
+  - [cockroachdb](databases/cockroachdb.yaml)
+  - [mariadb](databases/mariadb.yaml)
+  - [mongodb](databases/mongodb.yaml)
+  - [mysql](databases/mysql.yaml)
+  - [postgresql](databases/postgresql.yaml)
+  - [sqlite](databases/sqlite.yaml)
+  - [tools](databases/tools.yaml)
+</details>
 
-- [observability/prometheus-stack](observability/prometheus-stack/prometheus-stack.yaml)
-- [observability/tick-stack](observability/tick-stack/tick-stack.yaml)
-- [observability/tracing](observability/tracing.yaml)
-- [observability/zabbix](observability/zabbix.yaml)
+<details>
+  <summary>observability</summary>
+  
+  - [prometheus-stack](observability/prometheus-stack/prometheus-stack.yaml)
+  - [tick-stack](observability/tick-stack/tick-stack.yaml)
+  - [tracing](observability/tracing.yaml)
+  - [zabbix](observability/zabbix.yaml)
+</details>
 
-
-- [tools/scoutsuite](tools/scoutsuite/docker-compose.yaml)
-- [tools/debezium](tools/debezium.yamml)
-- [tools/sonarqube](tools/sonarqube.yaml)
+<details>
+  <summary>tools</summary>
+  
+  - [scoutsuite](tools/scoutesuite/docker-compose.yaml)
+  - [debezium](tools/debezium.yaml)
+  - [sonarqube](tools/sonarqube.yaml)
+</details>
