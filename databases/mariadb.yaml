@@ -18,7 +18,7 @@ services:
       MARIADB_ROOT_PASSWORD: root
       MARIADB_DATABASE: orders
     ports:
-      - "3306:3306"
+      - 3306:3306
     networks:
       - composes
     healthcheck:
@@ -73,7 +73,7 @@ services:
     restart: always
     image: phpmyadmin:5.2.1
     ports:
-      - 8080:80
+      - 8080:8080
     environment:
       - PMA_ARBITRARY=1
     networks:
