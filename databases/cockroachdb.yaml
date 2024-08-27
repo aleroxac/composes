@@ -59,7 +59,7 @@ services:
       COCKROACH_PASSWORD: root
       COCKROACH_DATABASE: orders
     ports:
-      - "8000:80"
+      - "8000:8000"
     networks:
       - composes
     depends_on:
