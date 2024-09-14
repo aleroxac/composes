@@ -15,6 +15,6 @@ services:
     restart: always
     image: memcached:1.6.29-alpine3.20
     ports:
-      - "11211:11211"
+      - 11211:11211
     networks:
       - composes
