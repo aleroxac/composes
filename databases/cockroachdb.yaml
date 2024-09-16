@@ -19,8 +19,8 @@ services:
       COCKROACH_PASSWORD: root
       COCKROACH_DATABASE: orders
     ports:
-      - "26257:26257"
-      - "8080:8080"
+      - 26257:26257
+      - 8080:8080
     command: start-single-node --insecure
     networks:
       - composes
@@ -59,7 +59,7 @@ services:
       COCKROACH_PASSWORD: root
       COCKROACH_DATABASE: orders
     ports:
-      - "8000:8000"
+      - 8000:8000
     networks:
       - composes
     depends_on:
