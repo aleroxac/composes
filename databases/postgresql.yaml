@@ -19,7 +19,7 @@ services:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
     ports:
-      - "5432:5432"
+      - 5432:5432
     networks:
       - composes
     healthcheck:
