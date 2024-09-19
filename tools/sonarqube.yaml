@@ -17,7 +17,7 @@ services:
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
-      - POSTGRES_DB=sonarqube
+      - POSTGRES_DB=sonar
 
   sonarqube:
     container_name: sonarqube
