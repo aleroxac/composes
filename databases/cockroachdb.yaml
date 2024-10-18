@@ -13,7 +13,7 @@ services:
     container_name: cockroachdb
     hostname: cockroachdb
     restart: always
-    image: cockroachdb/cockroach:v19.2.2
+    image: cockroachdb/cockroach:v23.2.14
     environment:
       COCKROACH_USER: root
       COCKROACH_PASSWORD: root
@@ -34,7 +34,7 @@ services:
     hostname: migrations
     container_name: migrations
     restart: no
-    image: migrate/migrate:v4.17.1
+    image: migrate/migrate:v4.18.1
     command: -path=/migrations -database "cockroachdb://root:root@cockroachdb:26257/orders" -verbose up
     environment:
       MYSQL_DATABASE: orders
@@ -51,7 +51,7 @@ services:
     container_name: pgadmin
     hostname: pgadmin
     restart: always
-    image: dpage/pgadmin4:2024-07-25-1
+    image: dpage/pgadmin4:2024-10-19-2
     environment:
       PGADMIN_DEFAULT_EMAIL: root@domain.com
       PGADMIN_DEFAULT_PASSWORD: root
