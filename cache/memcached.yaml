@@ -18,3 +18,8 @@ services:
       - 11211:11211
     networks:
       - composes
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "11211" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
