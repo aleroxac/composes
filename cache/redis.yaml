@@ -23,3 +23,19 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  insight:
+    hostname: insight
+    container_name: insight
+    restart: always
+    image: redis/redisinsight:2.60
+    ports:
+      - 5540:5540
+    networks:
+      - composes
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --no-verbose --tries=1 --timeout=5 http://localhost:3000/api/health || exit 1"]
+      start_interval: 2s
+      interval: 10s
+      timeout: 5s
+      retries: 3
