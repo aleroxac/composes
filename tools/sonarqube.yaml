@@ -32,7 +32,7 @@ services:
     container_name: sonarqube
     hostname: sonarqube
     restart: unless-stopped
-    image: sonarqube:9.9.6-community
+    image: sonarqube:9.9.7-community
     environment:
       - SONARQUBE_JDBC_USERNAME=sonar
       - SONARQUBE_JDBC_PASSWORD=sonar
@@ -40,3 +40,9 @@ services:
     ports:
       - 9000:9000
       - 9092:9092
+    healthcheck:
+      test: ["CMD-SHELL", "wget --auth-no-challenge --http-user=admin --http-password=admin -qO- http://localhost:9000/api/system/health > /dev/null 2>&1 || exit 1"]
+      start_interval: 2s
+      interval: 10s
+      timeout: 5s
+      retries: 3
