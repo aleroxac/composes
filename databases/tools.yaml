@@ -25,7 +25,7 @@ services:
     container_name: dbeaver
     hostname: dbeaver
     restart: always
-    image: dbeaver/cloudbeaver:latest
+    image: dbeaver/cloudbeaver:24.2.4
     ports:
       - 8978:8978
     networks:
