@@ -13,7 +13,7 @@ services:
     container_name: redis
     hostname: redis
     restart: always
-    image: redis:3.2-alpine
+    image: 7.4.1-alpine3.20
     ports:
       - 6379:6379
     networks:
@@ -25,8 +25,8 @@ services:
       retries: 5
 
   insight:
-    hostname: insight
     container_name: insight
+    hostname: insight
     restart: always
     image: redis/redisinsight:2.60
     ports:
