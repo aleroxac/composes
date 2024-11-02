@@ -13,7 +13,7 @@ services:
     container_name: memcached
     hostname: memcached
     restart: always
-    image: memcached:1.6.29-alpine3.20
+    image: memcached:1.6.32-alpine3.20
     ports:
       - 11211:11211
     networks:
